@@ -3,23 +3,23 @@
     {
       "project_name": "PIC-SURE-API Build",
       "project_job_git_key":"PSA",
-      "git_hash": "561414463691740ee7e215f3765682994ee4640f"
+      "git_hash": "b8bb72ce62b18069c65092ba9004bee6e92f669e"
     },{
       "project_name": "PIC-SURE-HPDS Build",
       "project_job_git_key":"PSH",
-      "git_hash": "4944a00ad150a4957e4ad2324ac9253da68966bb"
+      "git_hash": "49f3335020ae7a19d9713a9cad273d446195c979"
     },{
       "project_name": "PIC-SURE Auth Micro-App Build",
       "project_job_git_key":"PSAMA",
-      "git_hash": "5ef652bc663a3e957b5cc5ac6c3cc9fccec52cf8"
+      "git_hash": "4016a9fd6fae13a211900e4c98d0934fe0f59e27"
     },{
       "project_name": "PIC-SURE-HPDS-UI Build",
       "project_job_git_key":"PSHU",
-      "git_hash": "d60863a80aaccdf5d0652deb34b8c42c76e89139"
+      "git_hash": "58f2419a241557cbf5d1f68774fa680789117742"
     },{
       "project_name": "project-specific-ui",
       "project_job_git_key":"PSU",
-      "git_hash": "29d7f784f730cef9df74b64b2e42f82874ed788e"
+      "git_hash": "720c7488b75e57f7899271e06c869ce360b17887"
     }
   ]
 }
