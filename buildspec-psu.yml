@@ -30,15 +30,14 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source
       - git checkout $COMMIT
-      - echo Patching Dockerfile to import from $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE%%/*}/pic-sure-hpds-ui:$PSHU_COMMIT...
-      - sed -i "s|^FROM .* AS pic-sure-ui$|FROM $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE%%/*}/pic-sure-hpds-ui:$PSHU_COMMIT AS pic-sure-ui|g" /tmp/source/ui/Dockerfile
+      - echo Patching Dockerfile to import from ${IMAGE%/*}/pic-sure-hpds-ui:$PSHU_COMMIT...
+      - sed -i "s|^FROM .* AS pic-sure-ui$|FROM ${IMAGE%/*}/pic-sure-hpds-ui:$PSHU_COMMIT AS pic-sure-ui|g" /tmp/source/ui/Dockerfile
       - echo Building $IMAGE image...
       - docker build -t $IMAGE:$TAG /tmp/source/ui
-      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
-      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$COMMIT
+      - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing $IMAGE image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$COMMIT
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
+      - docker push $IMAGE:$TAG
+      - docker push $IMAGE:$COMMIT

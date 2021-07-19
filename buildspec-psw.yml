@@ -29,11 +29,10 @@ phases:
       - git checkout $COMMIT
       - echo Building $IMAGE image...
       - docker build -t $IMAGE:$TAG /tmp/source
-      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
-      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$CODEBUILD_GIT_COMMIT
+      - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing $IMAGE image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$CODEBUILD_GIT_COMMIT
+      - docker push $IMAGE:$TAG
+      - docker push $IMAGE:$COMMIT
