@@ -39,6 +39,8 @@ phases:
       - echo Pushing ${IMAGE} image...
       - docker push $IMAGE:$TAG
       - docker push $IMAGE:$COMMIT
+      - echo Renaming artifact /tmp/source/pic-sure-api-war/target/pic-sure-api-war.war to /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
+      - mv /tmp/source/pic-sure-api-war/target/pic-sure-api-war.war /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
 
 artifacts:
   files:
