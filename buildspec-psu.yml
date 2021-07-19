@@ -27,8 +27,8 @@ phases:
       - docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
   build:
     commands:
-      - export COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == '${APP}') | .git_hash"`
-      - export PSHU_COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == 'PSHU') | .git_hash"`
+      - export COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == \"${APP}\") | .git_hash"`
+      - export PSHU_COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == \"PSHU\") | .git_hash"`
       - echo Checking out $REPO @ $COMMIT...
       - git clone -n $REPO /tmp/source
       - cd /tmp/source
