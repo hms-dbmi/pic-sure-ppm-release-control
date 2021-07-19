@@ -39,7 +39,3 @@ phases:
       - echo Pushing $IMAGE image...
       - docker push $IMAGE:$TAG
       - docker push $IMAGE:$COMMIT
-
-cache:
-  paths:
-    - '/root/.m2/**/*'

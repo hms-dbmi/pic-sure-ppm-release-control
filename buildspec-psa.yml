@@ -46,7 +46,3 @@ artifacts:
   files:
     - /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
   discard-paths: yes
-
-cache:
-  paths:
-    - '/root/.m2/**/*'

@@ -44,7 +44,3 @@ artifacts:
   files:
     - /tmp/source/pic-sure-auth-services/target/pic-sure-auth-services.war
   discard-paths: yes
-
-cache:
-  paths:
-    - '/root/.m2/**/*'

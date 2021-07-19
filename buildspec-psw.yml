@@ -30,9 +30,9 @@ phases:
       - cd /tmp/source
       - git checkout $COMMIT
       - echo Patching Dockerfile to import from ${IMAGE%/*}/pic-sure-api:$PSA_COMMIT...
-      - sed -i "s|^FROM .* AS PSA$|FROM ${IMAGE%/*}/pic-sure-api:$PSA_COMMIT AS PSA|gI" /tmp/source/ui/Dockerfile
+      - sed -i "s|^FROM .* AS PSA$|FROM ${IMAGE%/*}/pic-sure-api:$PSA_COMMIT AS PSA|gI" /tmp/source/Dockerfile
       - echo Patching Dockerfile to import from ${IMAGE%/*}/pic-sure-auth-microapp:$PSAMA_COMMIT...
-      - sed -i "s|^FROM .* AS PSAMA$|FROM ${IMAGE%/*}/pic-sure-auth-microapp:$PSAMA_COMMIT AS PSAMA|gI" /tmp/source/ui/Dockerfile
+      - sed -i "s|^FROM .* AS PSAMA$|FROM ${IMAGE%/*}/pic-sure-auth-microapp:$PSAMA_COMMIT AS PSAMA|gI" /tmp/source/Dockerfile
       - echo Building $IMAGE image...
       - docker build --build-arg PIC_SURE_PASSTHRU_RESOURCE_VERSION=LATEST -t $IMAGE:$TAG /tmp/source
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
