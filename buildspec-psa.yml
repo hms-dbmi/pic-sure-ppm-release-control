@@ -42,7 +42,8 @@ phases:
       - echo Pushing ${IMAGE} image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$COMMIT
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
-  artifacts:
-    files:
-      - /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
-    discard-paths: yes
+
+artifacts:
+  files:
+    - /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
+  discard-paths: yes
