@@ -29,7 +29,7 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source && git checkout $COMMIT
       - echo Building $IMAGE source...
-      - mvn --no-transfer-progress --batch-mode clean install -DskipTests
+      - mvn -Dmaven.repo.local=$CODEBUILD_SHARED_CACHE --no-transfer-progress --batch-mode clean install -DskipTests
       - echo Building $IMAGE image...
       - docker build -t $IMAGE:$TAG /tmp/source/docker/pic-sure-hpds-etl
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT

@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   variables:
-    APP: PSAMA
-    REPO: https://github.com/hms-dbmi/pic-sure-api.git
+    APP: PSA
+    REPO: https://github.com/hms-dbmi/pic-sure.git
     IMAGE: "pic-sure-api"
     TAG: LATEST
   secrets-manager:
@@ -29,7 +29,7 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source && git checkout $COMMIT
       - echo Building ${IMAGE} source...
-      - mvn --no-transfer-progress --batch-mode clean install -DskipTests -Dwildfly.skip=true
+      - mvn -Dmaven.repo.local=$CODEBUILD_SHARED_CACHE --no-transfer-progress --batch-mode clean install -DskipTests -Dwildfly.skip=true
       - echo Building ${IMAGE} image...
       - docker build -t $IMAGE:$TAG /tmp/source/pic-sure-api-war
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
