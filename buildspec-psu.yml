@@ -13,12 +13,9 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto8
+      java: corretto11
     commands:
       - yum install -y jq git curl
-      - echo Installing codebuild-extras...
-      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/fd64ace08a309109058c461e6997807e7473fc61/install >> extras.sh
-      - . ./extras.sh
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
