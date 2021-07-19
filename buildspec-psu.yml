@@ -15,7 +15,7 @@ phases:
     runtime-versions:
       java: corretto8
     commands:
-      - apt-get install -y jq git curl
+      - yum install -y jq git curl
       - echo Installing codebuild-extras...
       - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/fd64ace08a309109058c461e6997807e7473fc61/install >> extras.sh
       - . ./extras.sh
@@ -28,11 +28,13 @@ phases:
   build:
     commands:
       - export COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == '${APP}') | .git_hash"`
+      - export PSHU_COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == 'PSHU') | .git_hash"`
+      - echo Checking out $REPO @ $COMMIT...
       - git clone -n $REPO /tmp/source
       - cd /tmp/source
       - git checkout $COMMIT
-      - echo Building $IMAGE source...
-      - mvn clean install -DskipTests
+      - echo Patching Dockerfile to import from $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE%%/*}/pic-sure-hpds-ui:$PSHU_COMMIT...
+      - sed -i "s|^FROM .* AS pic-sure-ui$|FROM $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE%%/*}/pic-sure-hpds-ui:$PSHU_COMMIT AS pic-sure-ui|g" /tmp/source/ui/Dockerfile
       - echo Building $IMAGE image...
       - docker build -t $IMAGE:$TAG /tmp/source/ui
       - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG

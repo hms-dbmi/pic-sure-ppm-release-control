@@ -15,7 +15,7 @@ phases:
     runtime-versions:
       java: corretto8
     commands:
-      - apt-get install -y jq git curl
+      - yum install -y jq git curl
       - echo Installing codebuild-extras...
       - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/fd64ace08a309109058c461e6997807e7473fc61/install >> extras.sh
       - . ./extras.sh
@@ -28,6 +28,7 @@ phases:
   build:
     commands:
       - export COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == '${APP}') | .git_hash"`
+      - echo Checking out $REPO @ $COMMIT...
       - git clone -n $REPO /tmp/source
       - cd /tmp/source
       - git checkout $COMMIT
