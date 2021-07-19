@@ -1,0 +1,45 @@
+version: 0.2
+
+env:
+  variables:
+    APP: PSU
+    REPO: https://github.com/hms-dbmi/pic-sure-ppm.git
+    IMAGE: "pic-sure-ui-overrides"
+    TAG: LATEST
+  secrets-manager:
+    DOCKER_HUB_USERNAME: "/hms/dbmi/ppm/neer/pic-sure/pipelines:username"
+    DOCKER_HUB_PASSWORD: "/hms/dbmi/ppm/neer/pic-sure/pipelines:password"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+    commands:
+      - apt-get install -y jq git curl
+      - echo Installing codebuild-extras...
+      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/fd64ace08a309109058c461e6997807e7473fc61/install >> extras.sh
+      - . ./extras.sh
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - echo Logging in to Docker Hub...
+      - docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
+  build:
+    commands:
+      - export COMMIT=`cat build-spec.json | jq -r ".application[] | select(.project_job_git_key == '${APP}') | .git_hash"`
+      - git clone -n $REPO /tmp/source
+      - cd /tmp/source
+      - git checkout $COMMIT
+      - echo Building $IMAGE source...
+      - mvn clean install -DskipTests
+      - echo Building $IMAGE image...
+      - docker build -t $IMAGE:$TAG /tmp/source/ui
+      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
+      - docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$COMMIT
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing $IMAGE image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$COMMIT
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE:$TAG
