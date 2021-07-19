@@ -29,7 +29,7 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source && git checkout $COMMIT
       - echo Building ${IMAGE} source...
-      - mvn clean install -DskipTests -Dwildfly.skip=true
+      - mvn --no-transfer-progress --batch-mode clean install -DskipTests -Dwildfly.skip=true
       - echo Building ${IMAGE} image...
       - docker build -t $IMAGE:$TAG /tmp/source/pic-sure-api-war
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
@@ -46,3 +46,7 @@ artifacts:
   files:
     - /tmp/source/pic-sure-api-war/target/pic-sure-api-2.war
   discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.m2/**/*'

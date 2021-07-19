@@ -29,7 +29,7 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source && git checkout $COMMIT
       - echo Building ${IMAGE} source...
-      - mvn clean install -DskipTests
+      - mvn --no-transfer-progress --batch-mode clean install -DskipTests
       - echo Building ${IMAGE} image...
       - docker build -t $IMAGE:$TAG /tmp/source/pic-sure-auth-services
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
@@ -44,3 +44,7 @@ artifacts:
   files:
     - /tmp/source/pic-sure-auth-services/target/pic-sure-auth-services.war
   discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.m2/**/*'

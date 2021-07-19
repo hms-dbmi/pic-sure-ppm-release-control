@@ -29,7 +29,7 @@ phases:
       - git clone -n $REPO /tmp/source
       - cd /tmp/source && git checkout $COMMIT
       - echo Building $IMAGE source...
-      - mvn clean install -DskipTests
+      - mvn --no-transfer-progress --batch-mode clean install -DskipTests
       - echo Building $IMAGE image...
       - docker build -t $IMAGE:$TAG /tmp/source/docker/pic-sure-hpds
       - docker tag $IMAGE:$TAG $IMAGE:$COMMIT
@@ -39,3 +39,7 @@ phases:
       - echo Pushing $IMAGE image...
       - docker push $IMAGE:$TAG
       - docker push $IMAGE:$COMMIT
+
+cache:
+  paths:
+    - '/root/.m2/**/*'
